@@ -6,6 +6,9 @@
     <title>Aura by Sakhi | Glow from Within</title>
     <meta name="description" content="Aura by Sakhi - Premium Oils, Modest Garments, Beauty & Lifestyle.">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22><text y=%22203%22 font-size=%22224%22 fill=%22%23A78BFA%22>✨</text></svg>">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +42,7 @@
                     animation: {
                         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
                         'slide-in-right': 'slideInRight 0.4s ease-out forwards',
+                        'spin-slow': 'spin 3s linear infinite',
                     },
                     keyframes: {
                         fadeInUp: {
@@ -97,6 +101,10 @@
         .img-zoom-container:hover .img-zoom {
             transform: scale(1.08);
         }
+
+        /* AI Markdown styling */
+        .ai-content strong { color: inherit; font-weight: 600; }
+        .ai-content p { margin-bottom: 0.5rem; }
     </style>
 </head>
 <body class="font-sans bg-brand-light text-brand-dark dark:bg-brand-darker dark:text-brand-light transition-colors duration-300">
@@ -151,7 +159,7 @@
             </div>
         </div>
 
-        <!-- Mobile Menu Panel (Hidden by default) -->
+        <!-- Mobile Menu Panel -->
         <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-brand-dark border-t border-brand-cream dark:border-gray-800">
             <div class="px-4 pt-2 pb-6 space-y-1">
                 <a href="#hero" class="block px-3 py-3 text-base font-medium hover:bg-brand-cream dark:hover:bg-gray-800 rounded-md transition">Home</a>
@@ -163,34 +171,50 @@
     </nav>
 
     <!-- Hero Section -->
-    <header id="hero" class="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        <!-- Background Image with Overlay -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1615397323136-1e0e8e4534cc?q=80&w=2000&auto=format&fit=crop" alt="Premium Beauty Model" class="w-full h-full object-cover object-top opacity-90 img-zoom">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+    <header id="hero" class="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-[#0B0F19] dark:bg-[#0B0F19]">
+        <!-- Background Glows -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+            <div class="absolute top-1/4 -left-64 w-96 h-96 bg-brand-lavender/20 rounded-full filter blur-[100px] opacity-50 animate-pulse"></div>
+            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-lavender/10 rounded-full filter blur-[120px]"></div>
         </div>
 
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
-            <div class="max-w-2xl animate-fade-in-up">
-                <span class="inline-block py-1 px-3 rounded-full bg-brand-cream/20 backdrop-blur-sm text-brand-cream text-xs font-semibold tracking-widest uppercase mb-4 border border-brand-cream/30">
-                    Premium Quality
-                </span>
-                <h1 class="text-5xl sm:text-6xl md:text-7xl font-serif text-white leading-tight mb-6 drop-shadow-md">
-                    Glow from <br>
-                    <span class="text-brand-lavender italic">Within</span>
-                </h1>
-                <p class="text-lg text-gray-200 mb-8 max-w-lg font-light leading-relaxed">
-                    Discover our luxurious collection of pure essential oils, elegant modest garments, and transformative beauty care designed for the modern Pakistani woman.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#featured" class="px-8 py-4 bg-brand-lavender hover:bg-purple-500 text-white font-medium rounded-full transition shadow-lg shadow-brand-lavender/30 flex items-center justify-center gap-2 group">
-                        Shop Collection
-                        <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                    <a href="https://wa.me/923469142507" target="_blank" rel="noopener noreferrer" class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-medium rounded-full transition flex items-center justify-center gap-2">
-                        <i class="ph-fill ph-whatsapp-logo text-emerald-400 text-xl"></i>
-                        Contact on WhatsApp
-                    </a>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-8">
+                <!-- Text Content (Left) -->
+                <div class="w-full md:w-1/2 max-w-2xl animate-fade-in-up py-12 md:py-0">
+                    <span class="inline-block py-1.5 px-4 rounded-full bg-white/5 backdrop-blur-md text-gray-300 text-xs font-semibold tracking-widest uppercase mb-6 border border-white/10">
+                        Premium Quality
+                    </span>
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl font-serif text-white leading-tight mb-6 drop-shadow-md">
+                        Glow from <br>
+                        <span class="text-brand-lavender italic">Within</span>
+                    </h1>
+                    <p class="text-lg text-gray-300 mb-8 max-w-lg font-light leading-relaxed">
+                        Discover our luxurious collection of pure essential oils, elegant modest garments, and transformative beauty care designed for the modern Pakistani woman.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#featured" class="px-8 py-4 bg-brand-lavender hover:bg-purple-500 text-white font-medium rounded-full transition shadow-lg shadow-brand-lavender/30 flex items-center justify-center gap-2 group">
+                            Shop Collection
+                            <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="https://wa.me/923469142507" target="_blank" rel="noopener noreferrer" class="px-8 py-4 bg-gray-800/80 hover:bg-gray-700 backdrop-blur-md text-white border border-gray-600 font-medium rounded-full transition flex items-center justify-center gap-2">
+                            <i class="ph-fill ph-whatsapp-logo text-emerald-400 text-xl"></i>
+                            Contact on WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Model Image (Right) -->
+                <div class="w-full md:w-1/2 relative flex justify-center items-end animate-fade-in-up mt-8 md:mt-0" style="animation-delay: 0.2s;">
+                    <!-- Decorative background element behind model -->
+                    <div class="absolute bottom-10 w-64 h-64 md:w-80 md:h-80 bg-brand-lavender/20 rounded-full blur-3xl"></div>
+                    
+                    <!-- PNG-like Model Image (styled as a cutout with mask) -->
+                    <!-- Note: You can replace this src with your own actual transparent PNG -->
+                    <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop" 
+                         alt="Aura Beauty Model" 
+                         class="relative z-10 w-full max-w-[300px] md:max-w-md lg:max-w-lg object-cover rounded-t-[12rem] border-t-8 border-white/5 shadow-2xl h-[450px] md:h-[600px] lg:h-[650px]"
+                         style="mask-image: linear-gradient(to top, transparent 2%, black 20%); -webkit-mask-image: linear-gradient(to top, transparent 2%, black 20%);">
                 </div>
             </div>
         </div>
@@ -409,7 +433,6 @@
                     &copy; <span id="year"></span> Aura by Sakhi. All rights reserved.
                 </p>
                 <div class="flex gap-2">
-                    <!-- Fake payment icons -->
                     <div class="h-8 w-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">VISA</div>
                     <div class="h-8 w-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">MC</div>
                     <div class="h-8 w-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">COD</div>
@@ -417,6 +440,55 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating AI Button -->
+    <button onclick="openAiStylist()" class="fixed bottom-6 right-6 z-40 bg-brand-lavender text-white w-14 h-14 rounded-full shadow-xl shadow-brand-lavender/30 hover:scale-110 transition-transform flex items-center justify-center group">
+        <i class="ph-fill ph-sparkle text-2xl group-hover:animate-pulse"></i>
+    </button>
+
+    <!-- AI Stylist Modal Overlay -->
+    <div id="ai-stylist-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0 transition-opacity">
+        <div id="ai-stylist-modal" class="bg-white dark:bg-brand-darker rounded-2xl shadow-2xl max-w-lg w-full transform scale-95 transition-transform duration-300 flex flex-col h-[600px] max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center relative overflow-hidden rounded-t-2xl">
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-lavender/10 to-transparent"></div>
+                <div class="relative z-10 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-lavender flex items-center justify-center text-white">
+                        <i class="ph-fill ph-sparkle text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-serif text-xl text-brand-dark dark:text-white">AI Beauty Stylist</h2>
+                        <p class="text-xs text-brand-lavender font-medium">Powered by Gemini</p>
+                    </div>
+                </div>
+                <button onclick="closeAiStylist()" class="relative z-10 text-gray-400 hover:text-brand-dark dark:hover:text-white transition">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Chat Area -->
+            <div id="ai-chat-area" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50 dark:bg-gray-900/50">
+                <div class="flex gap-3 max-w-[85%]">
+                    <div class="w-8 h-8 rounded-full bg-brand-lavender flex-shrink-0 flex items-center justify-center text-white">
+                        <i class="ph-fill ph-sparkle text-sm"></i>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl rounded-tl-sm shadow-sm text-sm text-brand-dark dark:text-gray-200">
+                        Hello! I'm your personal Aura by Sakhi beauty advisor. What kind of look, skin concern, or occasion are you shopping for today?
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-brand-darker rounded-b-2xl">
+                <form id="ai-chat-form" class="flex items-center gap-2 relative">
+                    <input type="text" id="ai-chat-input" placeholder="e.g., I have dry skin and need a glow..." class="flex-1 bg-gray-100 dark:bg-gray-900 border-none rounded-full px-4 py-3 text-sm focus:ring-2 focus:ring-brand-lavender text-brand-dark dark:text-white placeholder-gray-500 outline-none" required>
+                    <button type="submit" id="ai-chat-submit" class="w-10 h-10 bg-brand-dark dark:bg-brand-light text-white dark:text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-lavender dark:hover:bg-brand-lavender hover:text-white transition absolute right-1">
+                        <i class="ph-fill ph-paper-plane-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Cart Sidebar Overlay -->
     <div id="cart-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden transition-opacity opacity-0"></div>
@@ -435,7 +507,6 @@
         
         <!-- Cart Items Container -->
         <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-6">
-            <!-- Items injected by JS -->
             <div id="empty-cart-msg" class="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
                 <i class="ph ph-shopping-bag-open text-6xl opacity-50"></i>
                 <p>Your cart is empty.</p>
@@ -474,17 +545,15 @@
                 <h2 id="qv-title" class="text-3xl font-serif text-brand-dark dark:text-white mb-2"></h2>
                 
                 <div class="flex items-center gap-2 mb-4">
-                    <div class="flex text-brand-gold text-sm" id="qv-stars">
-                        <!-- Stars injected here -->
-                    </div>
+                    <div class="flex text-brand-gold text-sm" id="qv-stars"></div>
                     <span class="text-xs text-gray-500 dark:text-gray-400">(<span id="qv-reviews"></span> reviews)</span>
                 </div>
 
                 <div id="qv-price" class="text-2xl font-medium text-brand-dark dark:text-gray-200 mb-6"></div>
                 
-                <p id="qv-desc" class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-8 border-b border-gray-100 dark:border-gray-800 pb-6"></p>
+                <p id="qv-desc" class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6"></p>
                 
-                <div class="flex items-center gap-4 mb-6">
+                <div class="flex items-center gap-4 mb-4">
                     <!-- Quantity -->
                     <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-full overflow-hidden">
                         <button class="px-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition" onclick="document.getElementById('qv-qty').value = Math.max(1, parseInt(document.getElementById('qv-qty').value) - 1)">-</button>
@@ -492,12 +561,28 @@
                         <button class="px-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition" onclick="document.getElementById('qv-qty').value = parseInt(document.getElementById('qv-qty').value) + 1">+</button>
                     </div>
                     <!-- Add to Cart -->
-                    <button id="qv-add-btn" class="flex-1 bg-brand-lavender hover:bg-purple-500 text-white py-3 rounded-full font-medium transition shadow-md shadow-brand-lavender/20">
+                    <button id="qv-add-btn" class="flex-1 bg-brand-dark text-white hover:bg-brand-lavender py-3 rounded-full font-medium transition shadow-md">
                         Add to Cart
                     </button>
                 </div>
+
+                <!-- ✨ AI Routine Builder Feature -->
+                <div class="border-t border-gray-100 dark:border-gray-800 pt-4 mt-2">
+                    <button id="qv-ai-routine-btn" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-brand-lavender/30 bg-brand-lavender/5 text-brand-lavender hover:bg-brand-lavender hover:text-white transition duration-300 font-medium text-sm group">
+                        <i class="ph-fill ph-sparkle group-hover:animate-pulse"></i>
+                        ✨ Generate AI Usage Routine
+                    </button>
+                    
+                    <!-- AI Output Container -->
+                    <div id="qv-ai-output-container" class="hidden mt-4 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                        <div id="qv-ai-loading" class="flex items-center gap-2 text-brand-lavender text-sm hidden">
+                            <i class="ph ph-spinner-gap animate-spin"></i> Consulting Gemini AI...
+                        </div>
+                        <div id="qv-ai-content" class="ai-content text-sm text-brand-dark dark:text-gray-300"></div>
+                    </div>
+                </div>
                 
-                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-4">
+                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-6">
                     <i class="ph ph-shield-check text-brand-emerald text-lg"></i>
                     100% Authentic Product guarantee
                 </div>
@@ -509,6 +594,43 @@
     <script>
         // Set Current Year
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Gemini API Configuration
+        const apiKey = ""; // API Key provided by runtime environment
+        const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        // Utility function to call Gemini with Exponential Backoff
+        async function callGemini(prompt, systemInstruction) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(geminiEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't generate a response. Please try again.";
+                } catch (error) {
+                    if (i === 4) return "Connection error. Please try again later.";
+                    await new Promise(resolve => setTimeout(resolve, delays[i]));
+                }
+            }
+        }
+
+        // Simple Markdown parser for styling Gemini Output
+        function parseMarkdown(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        }
 
         // Product Data
         const products = [
@@ -576,7 +698,6 @@
         const emptyCartMsg = document.getElementById('empty-cart-msg');
         const cartFooter = document.getElementById('cart-footer');
         const cartTotal = document.getElementById('cart-total');
-        const startShoppingBtn = document.getElementById('start-shopping-btn');
         const toastContainer = document.getElementById('toast-container');
         
         // Quick View Elements
@@ -584,6 +705,18 @@
         const qvModal = document.getElementById('quick-view-modal');
         const qvClose = document.getElementById('close-quick-view');
         const qvAddBtn = document.getElementById('qv-add-btn');
+
+        // AI Elements
+        const aiStylistOverlay = document.getElementById('ai-stylist-overlay');
+        const aiStylistModal = document.getElementById('ai-stylist-modal');
+        const aiChatArea = document.getElementById('ai-chat-area');
+        const aiChatForm = document.getElementById('ai-chat-form');
+        const aiChatInput = document.getElementById('ai-chat-input');
+        
+        const qvAiBtn = document.getElementById('qv-ai-routine-btn');
+        const qvAiContainer = document.getElementById('qv-ai-output-container');
+        const qvAiLoading = document.getElementById('qv-ai-loading');
+        const qvAiContent = document.getElementById('qv-ai-content');
 
         // Theme Elements
         const themeToggle = document.getElementById('theme-toggle');
@@ -628,8 +761,6 @@
                     </div>
                 </div>
             `).join('');
-            
-            // Re-trigger observer for new elements
             observeElements();
         }
 
@@ -637,17 +768,10 @@
         function addToCart(productId, quantity = 1) {
             const product = products.find(p => p.id === productId);
             const existingItem = cart.find(item => item.id === productId);
-
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({ ...product, quantity });
-            }
-
+            if (existingItem) existingItem.quantity += quantity;
+            else cart.push({ ...product, quantity });
             updateCartUI();
             showToast(`${product.name} added to cart!`);
-            
-            // Small animation on cart icon
             cartBtn.classList.add('scale-125', 'text-brand-lavender');
             setTimeout(() => cartBtn.classList.remove('scale-125', 'text-brand-lavender'), 300);
         }
@@ -660,35 +784,22 @@
         function updateCartQuantity(productId, newQuantity) {
             if (newQuantity < 1) return;
             const item = cart.find(i => i.id === productId);
-            if (item) {
-                item.quantity = newQuantity;
-                updateCartUI();
-            }
+            if (item) { item.quantity = newQuantity; updateCartUI(); }
         }
 
         function updateCartUI() {
-            // Update Count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
             
-            // Toggle Empty State
             if (cart.length === 0) {
                 emptyCartMsg.classList.remove('hidden');
                 cartFooter.classList.add('hidden');
-                // Remove all item elements
-                Array.from(cartItemsContainer.children).forEach(child => {
-                    if (child.id !== 'empty-cart-msg') child.remove();
-                });
+                Array.from(cartItemsContainer.children).forEach(child => { if (child.id !== 'empty-cart-msg') child.remove(); });
             } else {
                 emptyCartMsg.classList.add('hidden');
                 cartFooter.classList.remove('hidden');
-                
-                // Keep empty msg but remove item rows to rebuild
-                Array.from(cartItemsContainer.children).forEach(child => {
-                    if (child.id !== 'empty-cart-msg') child.remove();
-                });
+                Array.from(cartItemsContainer.children).forEach(child => { if (child.id !== 'empty-cart-msg') child.remove(); });
 
-                // Build Items
                 cart.forEach(item => {
                     const el = document.createElement('div');
                     el.className = 'flex gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 animate-fade-in-up';
@@ -702,9 +813,7 @@
                                     <h4 class="text-sm font-medium text-brand-dark dark:text-white line-clamp-1">${item.name}</h4>
                                     <p class="text-xs text-brand-lavender">${formatPrice(item.price)}</p>
                                 </div>
-                                <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                                <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition"><i class="ph ph-trash"></i></button>
                             </div>
                             <div class="flex items-center justify-between mt-2">
                                 <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-full h-7">
@@ -718,48 +827,33 @@
                     `;
                     cartItemsContainer.appendChild(el);
                 });
-
-                // Update Total
                 const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 cartTotal.textContent = formatPrice(total);
             }
         }
 
-        // Sidebar Toggles
         function openCart() {
             cartOverlay.classList.remove('hidden');
-            setTimeout(() => {
-                cartOverlay.classList.remove('opacity-0');
-                cartSidebar.classList.remove('translate-x-full');
-            }, 10);
-            document.body.style.overflow = 'hidden'; // prevent bg scroll
+            setTimeout(() => { cartOverlay.classList.remove('opacity-0'); cartSidebar.classList.remove('translate-x-full'); }, 10);
+            document.body.style.overflow = 'hidden';
         }
 
         function closeCart() {
-            cartSidebar.classList.add('translate-x-full');
-            cartOverlay.classList.add('opacity-0');
-            setTimeout(() => {
-                cartOverlay.classList.add('hidden');
-            }, 300);
+            cartSidebar.classList.add('translate-x-full'); cartOverlay.classList.add('opacity-0');
+            setTimeout(() => { cartOverlay.classList.add('hidden'); }, 300);
             document.body.style.overflow = '';
         }
 
         cartBtn.addEventListener('click', openCart);
         closeCartBtn.addEventListener('click', closeCart);
         cartOverlay.addEventListener('click', closeCart);
-        startShoppingBtn.addEventListener('click', () => {
-            closeCart();
-            window.location.hash = '#featured';
-        });
 
-        // Quick View Logic
+        // Quick View Modal
         function openQuickView(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
-            
             currentQuickViewProduct = product;
 
-            // Populate data
             document.getElementById('qv-image').src = product.image;
             document.getElementById('qv-category').textContent = product.category;
             document.getElementById('qv-title').textContent = product.name;
@@ -768,151 +862,176 @@
             document.getElementById('qv-reviews').textContent = product.reviews;
             document.getElementById('qv-qty').value = 1;
 
-            // Populate stars
+            // Reset AI Routine UI
+            qvAiContainer.classList.add('hidden');
+            qvAiBtn.classList.remove('hidden');
+            qvAiContent.innerHTML = '';
+
             const starsContainer = document.getElementById('qv-stars');
             starsContainer.innerHTML = '';
             for(let i=0; i<5; i++) {
-                if(i < Math.floor(product.rating)) {
-                    starsContainer.innerHTML += '<i class="ph-fill ph-star"></i>';
-                } else if(i < product.rating) {
-                    starsContainer.innerHTML += '<i class="ph-fill ph-star-half"></i>';
-                } else {
-                    starsContainer.innerHTML += '<i class="ph ph-star"></i>';
-                }
+                if(i < Math.floor(product.rating)) starsContainer.innerHTML += '<i class="ph-fill ph-star"></i>';
+                else if(i < product.rating) starsContainer.innerHTML += '<i class="ph-fill ph-star-half"></i>';
+                else starsContainer.innerHTML += '<i class="ph ph-star"></i>';
             }
 
-            // Show Modal
-            qvOverlay.classList.remove('hidden');
-            qvOverlay.classList.add('flex');
-            setTimeout(() => {
-                qvOverlay.classList.remove('opacity-0');
-                qvModal.classList.remove('scale-95');
-                qvModal.classList.add('scale-100');
-            }, 10);
+            qvOverlay.classList.remove('hidden'); qvOverlay.classList.add('flex');
+            setTimeout(() => { qvOverlay.classList.remove('opacity-0'); qvModal.classList.remove('scale-95'); qvModal.classList.add('scale-100'); }, 10);
             document.body.style.overflow = 'hidden';
         }
 
         function closeQuickView() {
-            qvOverlay.classList.add('opacity-0');
-            qvModal.classList.remove('scale-100');
-            qvModal.classList.add('scale-95');
-            setTimeout(() => {
-                qvOverlay.classList.add('hidden');
-                qvOverlay.classList.remove('flex');
-            }, 300);
+            qvOverlay.classList.add('opacity-0'); qvModal.classList.remove('scale-100'); qvModal.classList.add('scale-95');
+            setTimeout(() => { qvOverlay.classList.add('hidden'); qvOverlay.classList.remove('flex'); }, 300);
             document.body.style.overflow = '';
             currentQuickViewProduct = null;
         }
 
         qvClose.addEventListener('click', closeQuickView);
-        qvOverlay.addEventListener('click', (e) => {
-            if(e.target === qvOverlay) closeQuickView();
-        });
+        qvOverlay.addEventListener('click', (e) => { if(e.target === qvOverlay) closeQuickView(); });
         qvAddBtn.addEventListener('click', () => {
             if(currentQuickViewProduct) {
-                const qty = parseInt(document.getElementById('qv-qty').value) || 1;
-                addToCart(currentQuickViewProduct.id, qty);
+                addToCart(currentQuickViewProduct.id, parseInt(document.getElementById('qv-qty').value) || 1);
                 closeQuickView();
-                // Optionally open cart right after adding
-                // setTimeout(openCart, 400); 
             }
+        });
+
+        // ✨ AI Routine Generator Feature
+        qvAiBtn.addEventListener('click', async () => {
+            if (!currentQuickViewProduct) return;
+            
+            qvAiBtn.classList.add('hidden');
+            qvAiContainer.classList.remove('hidden');
+            qvAiLoading.classList.remove('hidden');
+            qvAiContent.innerHTML = '';
+
+            const systemPrompt = "You are a top-tier beauty expert for Aura by Sakhi. Give a 3-step usage routine for the provided product. Keep it under 60 words, elegant, and use bolding for emphasis.";
+            const userPrompt = `Product: ${currentQuickViewProduct.name}. Description: ${currentQuickViewProduct.desc}. How should I use this in my daily routine?`;
+
+            const aiResponse = await callGemini(userPrompt, systemPrompt);
+            
+            qvAiLoading.classList.add('hidden');
+            qvAiContent.innerHTML = parseMarkdown(aiResponse);
+        });
+
+        // ✨ AI Stylist Floating Assistant
+        function openAiStylist() {
+            aiStylistOverlay.classList.remove('hidden'); aiStylistOverlay.classList.add('flex');
+            setTimeout(() => { aiStylistOverlay.classList.remove('opacity-0'); aiStylistModal.classList.remove('scale-95'); aiStylistModal.classList.add('scale-100'); }, 10);
+            document.body.style.overflow = 'hidden';
+            aiChatInput.focus();
+        }
+
+        function closeAiStylist() {
+            aiStylistOverlay.classList.add('opacity-0'); aiStylistModal.classList.remove('scale-100'); aiStylistModal.classList.add('scale-95');
+            setTimeout(() => { aiStylistOverlay.classList.add('hidden'); aiStylistOverlay.classList.remove('flex'); }, 300);
+            document.body.style.overflow = '';
+        }
+
+        function appendChatMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex gap-3 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse' : ''}`;
+            msgDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full ${isUser ? 'bg-brand-dark' : 'bg-brand-lavender'} flex-shrink-0 flex items-center justify-center text-white">
+                    <i class="${isUser ? 'ph ph-user' : 'ph-fill ph-sparkle'} text-sm"></i>
+                </div>
+                <div class="${isUser ? 'bg-brand-cream dark:bg-gray-700 text-brand-dark dark:text-white rounded-tr-sm' : 'bg-white dark:bg-gray-800 text-brand-dark dark:text-gray-200 rounded-tl-sm'} p-3 rounded-2xl shadow-sm text-sm ai-content">
+                    ${parseMarkdown(text)}
+                </div>
+            `;
+            aiChatArea.appendChild(msgDiv);
+            aiChatArea.scrollTop = aiChatArea.scrollHeight;
+        }
+
+        aiChatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = aiChatInput.value.trim();
+            if (!message) return;
+
+            // 1. Show user message
+            appendChatMessage(message, true);
+            aiChatInput.value = '';
+
+            // 2. Show loading state
+            const loadingId = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = loadingId;
+            loadingDiv.className = `flex gap-3 max-w-[85%]`;
+            loadingDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-brand-lavender flex-shrink-0 flex items-center justify-center text-white">
+                    <i class="ph-fill ph-sparkle text-sm"></i>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl rounded-tl-sm shadow-sm text-sm text-brand-lavender flex items-center gap-2">
+                    <i class="ph ph-spinner-gap animate-spin"></i> Typing...
+                </div>
+            `;
+            aiChatArea.appendChild(loadingDiv);
+            aiChatArea.scrollTop = aiChatArea.scrollHeight;
+
+            // 3. Call Gemini
+            const catalog = JSON.stringify(products.map(p => ({name: p.name, desc: p.desc, price: p.price, category: p.category})));
+            const systemInstruction = `You are a helpful, luxurious AI beauty stylist for 'Aura by Sakhi'. 
+            Here is our current product catalog: ${catalog}. 
+            Recommend exactly 1 or 2 products from the catalog based on the user's needs. Be extremely concise (under 80 words), friendly, and elegant. Only recommend items from the catalog.`;
+            
+            const response = await callGemini(message, systemInstruction);
+
+            // 4. Remove loading and show AI response
+            document.getElementById(loadingId).remove();
+            appendChatMessage(response, false);
         });
 
         // Toast Notification System
         function showToast(message) {
             const toast = document.createElement('div');
             toast.className = 'bg-brand-dark dark:bg-brand-light text-white dark:text-brand-dark px-6 py-3 rounded-md shadow-xl flex items-center gap-3 animate-slide-in-right';
-            toast.innerHTML = `
-                <i class="ph-fill ph-check-circle text-brand-emerald text-xl"></i>
-                <span class="text-sm font-medium">${message}</span>
-            `;
-            
+            toast.innerHTML = `<i class="ph-fill ph-check-circle text-brand-emerald text-xl"></i><span class="text-sm font-medium">${message}</span>`;
             toastContainer.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                toast.style.transition = 'all 0.4s ease';
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; toast.style.transition = 'all 0.4s ease'; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             const icon = mobileMenuBtn.querySelector('i');
-            if(mobileMenu.classList.contains('hidden')) {
-                icon.classList.replace('ph-x', 'ph-list');
-            } else {
-                icon.classList.replace('ph-list', 'ph-x');
-            }
+            if(mobileMenu.classList.contains('hidden')) icon.classList.replace('ph-x', 'ph-list');
+            else icon.classList.replace('ph-list', 'ph-x');
         });
 
-        // Close mobile menu on link click
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileMenuBtn.querySelector('i').classList.replace('ph-x', 'ph-list');
-            });
-        });
-
-        // Scroll Reveal Animation Observer
+        // Scroll Reveal
         function observeElements() {
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        // Optional: stop observing once revealed
-                        // observer.unobserve(entry.target); 
-                    }
-                });
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
             }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // Dark Mode / Theme Toggle
+        // Dark Mode
         function initTheme() {
-            // Check local storage or system preference
             if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                htmlElement.classList.add('dark');
-                themeIcon.classList.replace('ph-moon', 'ph-sun');
+                htmlElement.classList.add('dark'); themeIcon.classList.replace('ph-moon', 'ph-sun');
             } else {
-                htmlElement.classList.remove('dark');
-                themeIcon.classList.replace('ph-sun', 'ph-moon');
+                htmlElement.classList.remove('dark'); themeIcon.classList.replace('ph-sun', 'ph-moon');
             }
         }
-
         themeToggle.addEventListener('click', () => {
             if (htmlElement.classList.contains('dark')) {
-                htmlElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-                themeIcon.classList.replace('ph-sun', 'ph-moon');
+                htmlElement.classList.remove('dark'); localStorage.setItem('color-theme', 'light'); themeIcon.classList.replace('ph-sun', 'ph-moon');
             } else {
-                htmlElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-                themeIcon.classList.replace('ph-moon', 'ph-sun');
+                htmlElement.classList.add('dark'); localStorage.setItem('color-theme', 'dark'); themeIcon.classList.replace('ph-moon', 'ph-sun');
             }
         });
 
-        // Navbar blur effect on scroll
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if (window.scrollY > 20) {
-                nav.classList.add('shadow-sm');
-            } else {
-                nav.classList.remove('shadow-sm');
-            }
+            if (window.scrollY > 20) nav.classList.add('shadow-sm');
+            else nav.classList.remove('shadow-sm');
         });
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            initTheme();
-            observeElements();
+            renderProducts(); initTheme(); observeElements();
         });
 
     </script>
