@@ -3,43 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Golden Palette | Professional Art Supplies & Equipment</title>
+    <title>Aura by Sakhi | Glow from Within</title>
+    <meta name="description" content="Aura by Sakhi - Premium Oils, Modest Garments, Beauty & Lifestyle.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (via CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        gold: {
-                            DEFAULT: '#F59E0B', /* Vibrant Professional Amber/Gold */
-                            light: '#FEF3C7',
-                            dark: '#B45309',
-                        },
-                        charcoal: '#0F172A', /* Deep Navy Slate */
-                        cream: '#F8FAFC', /* Crisp Cool Slate-50 */
+                        brand: {
+                            lavender: '#A78BFA',
+                            gold: '#F59E0B',
+                            cream: '#F8F1E3',
+                            emerald: '#10B981',
+                            dark: '#1F2937',
+                            darker: '#111827',
+                            light: '#FAFAFA'
+                        }
                     },
                     fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
                         sans: ['Inter', 'sans-serif'],
-                        display: ['Montserrat', 'sans-serif'],
                     },
                     animation: {
                         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-in-right': 'slideInRight 0.4s ease-out forwards',
                     },
                     keyframes: {
                         fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(0)' },
                         }
                     }
                 }
@@ -47,176 +55,184 @@
         }
     </script>
 
+    <!-- Custom CSS for specific UI/UX details -->
     <style>
-        /* Custom Styles & Utilities */
-        body {
-            background-color: theme('colors.cream');
-            color: theme('colors.charcoal');
+        /* Hide Scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-
-        /* Hide scrollbar for a cleaner look but keep functionality */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
-        ::-webkit-scrollbar-track {
-            background: #F8FAFC;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #F59E0B;
-            border-radius: 4px;
-        }
-
-        /* Scroll Reveal Utility Classes */
+        
+        /* Smooth Reveal Animation Class */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-        
-        /* Card Image Zoom Effect */
-        .product-img-wrapper {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+
+        /* Custom Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass {
+            background: rgba(17, 24, 39, 0.85);
         }
 
-        /* Toast Notification */
-        #toast {
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0s, opacity 0.3s linear;
+        /* Image Zoom Hover */
+        .img-zoom-container {
+            overflow: hidden;
         }
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
+        .img-zoom {
+            transition: transform 0.6s ease;
+        }
+        .img-zoom-container:hover .img-zoom {
+            transform: scale(1.08);
         }
     </style>
 </head>
-<body class="antialiased overflow-x-hidden font-sans">
+<body class="font-sans bg-brand-light text-brand-dark dark:bg-brand-darker dark:text-brand-light transition-colors duration-300">
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-charcoal text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 transform translate-y-10 transition-all duration-300">
-        <i class="fas fa-check-circle text-gold"></i>
-        <span id="toast-message">Item added to cart!</span>
-    </div>
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-24 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-40 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-200 py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <!-- Logo -->
-            <a href="#" class="font-display text-2xl font-bold tracking-wide text-charcoal flex items-center gap-2">
-                <div class="bg-gold text-white w-8 h-8 rounded-md flex items-center justify-center">
-                    <i class="fas fa-palette text-sm"></i>
+    <!-- Sticky Navigation -->
+    <nav class="fixed w-full z-40 glass border-b border-brand-cream/50 dark:border-gray-800 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 text-brand-dark dark:text-brand-light hover:text-brand-lavender transition">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
                 </div>
-                The Golden Palette
-            </a>
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="#home" class="text-sm font-semibold text-gray-600 hover:text-gold transition-colors">Home</a>
-                <a href="#collection" class="text-sm font-semibold text-gray-600 hover:text-gold transition-colors">Categories</a>
-                <a href="#featured" class="text-sm font-semibold text-gray-600 hover:text-gold transition-colors">Top Rated</a>
-                <a href="#about" class="text-sm font-semibold text-gray-600 hover:text-gold transition-colors">About Us</a>
-            </div>
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center justify-center flex-1 md:flex-none">
+                    <a href="#" class="font-serif text-2xl tracking-wide font-semibold text-brand-dark dark:text-brand-light flex items-center gap-2">
+                        <span class="text-brand-lavender"><i class="ph-fill ph-sparkle"></i></span>
+                        Aura <span class="text-sm font-sans font-normal italic text-gray-500 dark:text-gray-400 mt-1">by Sakhi</span>
+                    </a>
+                </div>
 
-            <!-- Icons -->
-            <div class="flex items-center space-x-5">
-                <button class="text-gray-600 hover:text-gold transition-colors"><i class="fas fa-search"></i></button>
-                <button class="text-gray-600 hover:text-gold transition-colors"><i class="far fa-user"></i></button>
-                <button class="text-gray-600 hover:text-gold transition-colors relative" onclick="showToast('Cart opened')">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-gold text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">0</span>
-                </button>
-                <!-- Mobile menu button -->
-                <button id="mobile-menu-btn" class="md:hidden text-charcoal focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#hero" class="text-sm font-medium hover:text-brand-lavender transition">Home</a>
+                    <a href="#categories" class="text-sm font-medium hover:text-brand-lavender transition">Categories</a>
+                    <a href="#featured" class="text-sm font-medium hover:text-brand-lavender transition">Shop</a>
+                    <a href="#about" class="text-sm font-medium hover:text-brand-lavender transition">Our Story</a>
+                </div>
+
+                <!-- Icons (Search, Theme, User, Cart) -->
+                <div class="flex items-center space-x-4 md:space-x-6">
+                    <button class="text-brand-dark dark:text-brand-light hover:text-brand-lavender transition hidden sm:block">
+                        <i class="ph ph-magnifying-glass text-xl"></i>
+                    </button>
+                    <button id="theme-toggle" class="text-brand-dark dark:text-brand-light hover:text-brand-gold transition">
+                        <i id="theme-icon" class="ph ph-moon text-xl"></i>
+                    </button>
+                    <button class="text-brand-dark dark:text-brand-light hover:text-brand-lavender transition hidden sm:block">
+                        <i class="ph ph-user text-xl"></i>
+                    </button>
+                    <button id="cart-btn" class="text-brand-dark dark:text-brand-light hover:text-brand-lavender transition relative">
+                        <i class="ph ph-shopping-bag text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-lavender text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-sm">0</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-full shadow-lg">
-            <div class="px-4 pt-2 pb-6 space-y-1 flex flex-col">
-                <a href="#home" class="block px-3 py-3 text-base font-semibold border-b border-gray-50 text-gray-600 hover:text-gold">Home</a>
-                <a href="#collection" class="block px-3 py-3 text-base font-semibold border-b border-gray-50 text-gray-600 hover:text-gold">Categories</a>
-                <a href="#featured" class="block px-3 py-3 text-base font-semibold border-b border-gray-50 text-gray-600 hover:text-gold">Top Rated</a>
-                <a href="#about" class="block px-3 py-3 text-base font-semibold text-gray-600 hover:text-gold">About Us</a>
+        <!-- Mobile Menu Panel (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-brand-dark border-t border-brand-cream dark:border-gray-800">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#hero" class="block px-3 py-3 text-base font-medium hover:bg-brand-cream dark:hover:bg-gray-800 rounded-md transition">Home</a>
+                <a href="#categories" class="block px-3 py-3 text-base font-medium hover:bg-brand-cream dark:hover:bg-gray-800 rounded-md transition">Categories</a>
+                <a href="#featured" class="block px-3 py-3 text-base font-medium hover:bg-brand-cream dark:hover:bg-gray-800 rounded-md transition">Shop</a>
+                <a href="#about" class="block px-3 py-3 text-base font-medium hover:bg-brand-cream dark:hover:bg-gray-800 rounded-md transition">Our Story</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background Image -->
-        <div class="absolute inset-0 z-0 bg-charcoal">
-            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop" alt="Abstract Art Background" class="w-full h-full object-cover object-center scale-105 transform origin-center animate-[pulse-slow_10s_ease-in-out_infinite_alternate] opacity-60">
-            <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-transparent"></div>
+    <header id="hero" class="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1615397323136-1e0e8e4534cc?q=80&w=2000&auto=format&fit=crop" alt="Premium Beauty Model" class="w-full h-full object-cover object-top opacity-90 img-zoom">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
         </div>
 
-        <!-- Hero Content -->
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16 animate-fade-in-up">
-            <span class="block text-gold font-bold tracking-widest uppercase text-xs mb-4">Professional Grade Supplies</span>
-            <h1 class="text-5xl md:text-7xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
-                Equip Your <br><span class="text-gold">Creative Studio</span>
-            </h1>
-            <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-medium">
-                High-performance art materials, precision tools, and professional canvases built for serious creators and established artists.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#featured" class="bg-gold hover:bg-gold-dark text-white px-8 py-4 rounded-md uppercase tracking-wider text-sm font-bold transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
-                    Shop Equipment
-                </a>
-                <a href="#collection" class="bg-white/10 backdrop-blur-sm border border-white/30 text-white hover:bg-white hover:text-charcoal px-8 py-4 rounded-md uppercase tracking-wider text-sm font-bold transition-all duration-300">
-                    Browse Categories
-                </a>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+            <div class="max-w-2xl animate-fade-in-up">
+                <span class="inline-block py-1 px-3 rounded-full bg-brand-cream/20 backdrop-blur-sm text-brand-cream text-xs font-semibold tracking-widest uppercase mb-4 border border-brand-cream/30">
+                    Premium Quality
+                </span>
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-serif text-white leading-tight mb-6 drop-shadow-md">
+                    Glow from <br>
+                    <span class="text-brand-lavender italic">Within</span>
+                </h1>
+                <p class="text-lg text-gray-200 mb-8 max-w-lg font-light leading-relaxed">
+                    Discover our luxurious collection of pure essential oils, elegant modest garments, and transformative beauty care designed for the modern Pakistani woman.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#featured" class="px-8 py-4 bg-brand-lavender hover:bg-purple-500 text-white font-medium rounded-full transition shadow-lg shadow-brand-lavender/30 flex items-center justify-center gap-2 group">
+                        Shop Collection
+                        <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="https://wa.me/923469142507" target="_blank" rel="noopener noreferrer" class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-medium rounded-full transition flex items-center justify-center gap-2">
+                        <i class="ph-fill ph-whatsapp-logo text-emerald-400 text-xl"></i>
+                        Contact on WhatsApp
+                    </a>
+                </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <!-- Categories / Collections -->
-    <section id="collection" class="py-24 bg-cream">
+    <!-- Shop by Category -->
+    <section id="categories" class="py-20 bg-brand-light dark:bg-brand-darker relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
-                <h2 class="text-3xl md:text-4xl font-display font-bold mb-4 text-charcoal">Shop by Category</h2>
-                <div class="h-1.5 w-16 bg-gold mx-auto rounded-full"></div>
+                <h2 class="text-3xl md:text-4xl font-serif mb-4">Shop by Category</h2>
+                <div class="w-24 h-1 bg-brand-lavender mx-auto rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Category 1 -->
-                <div class="group relative h-96 overflow-hidden cursor-pointer rounded-xl shadow-md reveal">
-                    <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=800&auto=format&fit=crop" alt="Premium Paints" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/40 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                        <h3 class="text-2xl font-display font-bold text-white mb-2">Professional Paints</h3>
-                        <a href="#" class="inline-flex items-center text-gold uppercase tracking-wider text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                            Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
+                <div class="group cursor-pointer reveal">
+                    <div class="relative h-80 rounded-2xl overflow-hidden img-zoom-container mb-4 shadow-md">
+                        <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=800&auto=format&fit=crop" alt="Pure Oils" class="w-full h-full object-cover img-zoom">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <h3 class="text-white text-2xl font-serif font-medium tracking-wide drop-shadow-md bg-black/20 px-6 py-2 rounded-full backdrop-blur-sm border border-white/20">Pure Oils</h3>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Category 2 -->
-                <div class="group relative h-96 overflow-hidden cursor-pointer rounded-xl shadow-md reveal" style="transition-delay: 100ms;">
-                    <img src="https://images.unsplash.com/photo-1583214710529-54b0fa0e722f?q=80&w=800&auto=format&fit=crop" alt="Professional Tools" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/40 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                        <h3 class="text-2xl font-display font-bold text-white mb-2">Precision Brushes</h3>
-                        <a href="#" class="inline-flex items-center text-gold uppercase tracking-wider text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                            Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
+                <div class="group cursor-pointer reveal" style="transition-delay: 100ms;">
+                    <div class="relative h-80 rounded-2xl overflow-hidden img-zoom-container mb-4 shadow-md">
+                        <img src="https://images.unsplash.com/photo-1589465885857-44edb59bbff2?q=80&w=800&auto=format&fit=crop" alt="Modest Garments" class="w-full h-full object-cover img-zoom">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <h3 class="text-white text-2xl font-serif font-medium tracking-wide drop-shadow-md bg-black/20 px-6 py-2 rounded-full backdrop-blur-sm border border-white/20">Garments</h3>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Category 3 -->
-                <div class="group relative h-96 overflow-hidden cursor-pointer rounded-xl shadow-md reveal" style="transition-delay: 200ms;">
-                    <img src="https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?q=80&w=800&auto=format&fit=crop" alt="Luxury Canvases" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/40 to-transparent transition-opacity duration-300"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                        <h3 class="text-2xl font-display font-bold text-white mb-2">Studio Canvases</h3>
-                        <a href="#" class="inline-flex items-center text-gold uppercase tracking-wider text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                            Explore <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
+                <div class="group cursor-pointer reveal" style="transition-delay: 200ms;">
+                    <div class="relative h-80 rounded-2xl overflow-hidden img-zoom-container mb-4 shadow-md">
+                        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop" alt="Beauty & Skincare" class="w-full h-full object-cover img-zoom">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <h3 class="text-white text-2xl font-serif font-medium tracking-wide drop-shadow-md bg-black/20 px-6 py-2 rounded-full backdrop-blur-sm border border-white/20">Skincare</h3>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,273 +240,602 @@
     </section>
 
     <!-- Featured Products -->
-    <section id="featured" class="py-24 bg-white">
+    <section id="featured" class="py-20 bg-brand-cream/30 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-end mb-12 reveal">
                 <div>
-                    <span class="text-gold font-bold tracking-widest uppercase text-xs">Top Rated</span>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold mt-2 text-charcoal">Professional Gear</h2>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-4">Featured Collection</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Handpicked favorites loved by our community.</p>
                 </div>
-                <a href="#" class="hidden sm:inline-block pb-1 border-b-2 border-charcoal text-sm font-bold uppercase tracking-wider text-charcoal hover:text-gold hover:border-gold transition-colors">View All</a>
+                <a href="#" class="hidden sm:flex items-center gap-1 text-brand-lavender font-medium hover:text-purple-600 transition">
+                    View All <i class="ph ph-arrow-right"></i>
+                </a>
             </div>
 
-            <!-- Product Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-                
-                <!-- Product Card 1 -->
-                <div class="group relative reveal">
-                    <!-- Image Wrapper -->
-                    <div class="product-img-wrapper relative aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=80&w=600&auto=format&fit=crop" alt="Aurum Oil Paint Set" class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105">
-                        
-                        <!-- Hover Actions (Animations applied here) -->
-                        <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px]">
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gold hover:text-white shadow-lg" title="Quick View">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 hover:bg-gold hover:text-white shadow-lg" title="Add to Wishlist">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-
-                        <!-- Add to Cart Button (Slide up) -->
-                        <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                            <button onclick="addToCart('Pro Series Oil Paint Set')" class="w-full bg-charcoal text-white py-3 rounded-md uppercase text-xs tracking-wider font-bold hover:bg-gold transition-colors shadow-lg">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Details Wrapper (Slight shift up on hover) -->
-                    <div class="text-center transform transition-transform duration-300 group-hover:-translate-y-1">
-                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Paints</p>
-                        <h3 class="text-lg font-display font-bold text-charcoal mb-1"><a href="#" class="hover:text-gold transition-colors">Pro Series Oil Paint Set</a></h3>
-                        <p class="text-gold font-bold text-lg">$120.00</p>
-                    </div>
-                </div>
-
-                <!-- Product Card 2 -->
-                <div class="group relative reveal" style="transition-delay: 100ms;">
-                    <div class="product-img-wrapper relative aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1544254002-3f1406527b14?q=80&w=600&auto=format&fit=crop" alt="Midnight Charcoal Collection" class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute top-4 right-4 bg-charcoal text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-md z-10 shadow-sm">Best Seller</div>
-                        
-                        <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px]">
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gold hover:text-white shadow-lg">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 hover:bg-gold hover:text-white shadow-lg">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-
-                        <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                            <button onclick="addToCart('Architect Charcoal Set')" class="w-full bg-charcoal text-white py-3 rounded-md uppercase text-xs tracking-wider font-bold hover:bg-gold transition-colors shadow-lg">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center transform transition-transform duration-300 group-hover:-translate-y-1">
-                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Drafting</p>
-                        <h3 class="text-lg font-display font-bold text-charcoal mb-1"><a href="#" class="hover:text-gold transition-colors">Architect Charcoal Set</a></h3>
-                        <p class="text-gold font-bold text-lg">$45.00</p>
-                    </div>
-                </div>
-
-                <!-- Product Card 3 -->
-                <div class="group relative reveal" style="transition-delay: 200ms;">
-                    <div class="product-img-wrapper relative aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1502472584811-0a2f2feb8968?q=80&w=600&auto=format&fit=crop" alt="Imperial Easel" class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105">
-                        
-                        <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px]">
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gold hover:text-white shadow-lg">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 hover:bg-gold hover:text-white shadow-lg">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-
-                        <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                            <button onclick="addToCart('Heavy-Duty Studio Easel')" class="w-full bg-charcoal text-white py-3 rounded-md uppercase text-xs tracking-wider font-bold hover:bg-gold transition-colors shadow-lg">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center transform transition-transform duration-300 group-hover:-translate-y-1">
-                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Equipment</p>
-                        <h3 class="text-lg font-display font-bold text-charcoal mb-1"><a href="#" class="hover:text-gold transition-colors">Heavy-Duty Studio Easel</a></h3>
-                        <p class="text-gold font-bold text-lg">$280.00</p>
-                    </div>
-                </div>
-
-                <!-- Product Card 4 -->
-                <div class="group relative reveal" style="transition-delay: 300ms;">
-                    <div class="product-img-wrapper relative aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?q=80&w=600&auto=format&fit=crop" alt="Sable Brush Set" class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105">
-                        <div class="absolute top-4 right-4 bg-gold text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-md z-10 shadow-sm">New</div>
-
-                        <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3 backdrop-blur-[2px]">
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gold hover:text-white shadow-lg">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            <button class="w-12 h-12 bg-white rounded-full text-charcoal flex items-center justify-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 hover:bg-gold hover:text-white shadow-lg">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-
-                        <div class="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                            <button onclick="addToCart('Masterstroke Brush Kit')" class="w-full bg-charcoal text-white py-3 rounded-md uppercase text-xs tracking-wider font-bold hover:bg-gold transition-colors shadow-lg">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center transform transition-transform duration-300 group-hover:-translate-y-1">
-                        <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Tools</p>
-                        <h3 class="text-lg font-display font-bold text-charcoal mb-1"><a href="#" class="hover:text-gold transition-colors">Masterstroke Brush Kit</a></h3>
-                        <p class="text-gold font-bold text-lg">$95.00</p>
-                    </div>
-                </div>
+            <!-- Products Grid (Rendered via JS) -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+                <!-- Products injected here -->
             </div>
             
-            <div class="mt-12 text-center sm:hidden">
-                <a href="#" class="inline-block pb-1 border-b-2 border-charcoal text-sm font-bold uppercase tracking-wider text-charcoal hover:text-gold hover:border-gold transition-colors">View All Products</a>
+            <div class="mt-12 text-center sm:hidden reveal">
+                <button class="px-8 py-3 border border-brand-dark dark:border-brand-light rounded-full text-brand-dark dark:text-brand-light hover:bg-brand-dark hover:text-white dark:hover:bg-white dark:hover:text-black transition">
+                    View All Products
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Promotional Banner Section -->
-    <section class="py-24 relative overflow-hidden bg-charcoal text-white">
-        <div class="absolute inset-0 z-0 opacity-20 mix-blend-luminosity">
-            <img src="https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover">
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/90 to-transparent z-0"></div>
-        
-        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center reveal">
-            <div class="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-bolt text-2xl text-gold"></i>
+    <!-- Brand Story -->
+    <section id="about" class="py-24 bg-white dark:bg-brand-darker overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="w-full md:w-1/2 relative reveal">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 bg-brand-cream dark:bg-gray-800 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-pulse"></div>
+                    <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-brand-lavender/30 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-pulse" style="animation-delay: 1s;"></div>
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1000&auto=format&fit=crop" alt="Aura by Sakhi Concept" class="relative z-10 w-full max-w-md mx-auto rounded-t-full shadow-2xl object-cover h-[500px]">
+                </div>
+                <div class="w-full md:w-1/2 reveal" style="transition-delay: 200ms;">
+                    <span class="text-brand-gold font-medium tracking-widest uppercase text-sm mb-2 block">Our Story</span>
+                    <h2 class="text-4xl font-serif mb-6 leading-tight">Elevating Everyday Elegance</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                        At <strong class="text-brand-dark dark:text-white font-serif">Aura by Sakhi</strong>, we believe that true beauty radiates from a blend of holistic care and confident style. Founded in Islamabad, our mission is to empower the modern Pakistani woman.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                        From our meticulously sourced pure hair and essential oils to our exclusively designed modest garments, every piece is a testament to premium quality, purity, and grace.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <h4 class="font-serif text-xl mb-1 text-brand-dark dark:text-white">100% Pure</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Natural Ingredients</p>
+                        </div>
+                        <div>
+                            <h4 class="font-serif text-xl mb-1 text-brand-dark dark:text-white">Premium</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Craftsmanship</p>
+                        </div>
+                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Signature_of_Sakhi.svg/1200px-Signature_of_Sakhi.svg.png" alt="Signature" class="h-12 opacity-50 dark:invert" onerror="this.style.display='none'">
+                </div>
             </div>
-            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6">Upgrade Your Toolkit</h2>
-            <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto font-medium">Join our professional network and receive industry updates plus 15% off your first equipment order.</p>
-            <form class="flex flex-col sm:flex-row gap-2 max-w-lg mx-auto" onsubmit="event.preventDefault(); showToast('Subscribed successfully!');">
-                <input type="email" placeholder="Business or personal email" required class="flex-1 px-6 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold rounded-md transition-colors">
-                <button type="submit" class="bg-gold hover:bg-gold-dark text-white px-8 py-4 uppercase tracking-wider text-sm font-bold transition-colors rounded-md shadow-lg">
-                    Subscribe
-                </button>
-            </form>
+        </div>
+    </section>
+
+    <!-- Trust Signals / Instagram Style -->
+    <section id="trust" class="py-16 bg-brand-cream/50 dark:bg-gray-900 border-y border-brand-cream dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="flex flex-col items-center reveal">
+                    <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-lavender">
+                        <i class="ph ph-leaf text-3xl"></i>
+                    </div>
+                    <h4 class="font-medium text-brand-dark dark:text-white">Organic & Pure</h4>
+                    <p class="text-xs text-gray-500 mt-1">Ethically sourced oils</p>
+                </div>
+                <div class="flex flex-col items-center reveal" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-gold">
+                        <i class="ph ph-medal text-3xl"></i>
+                    </div>
+                    <h4 class="font-medium text-brand-dark dark:text-white">Premium Quality</h4>
+                    <p class="text-xs text-gray-500 mt-1">Unmatched craftsmanship</p>
+                </div>
+                <div class="flex flex-col items-center reveal" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-emerald">
+                        <i class="ph ph-shield-check text-3xl"></i>
+                    </div>
+                    <h4 class="font-medium text-brand-dark dark:text-white">Secure Checkout</h4>
+                    <p class="text-xs text-gray-500 mt-1">100% safe & protected</p>
+                </div>
+                <div class="flex flex-col items-center reveal" style="transition-delay: 300ms;">
+                    <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm mb-4 text-gray-800 dark:text-gray-200">
+                        <i class="ph ph-truck text-3xl"></i>
+                    </div>
+                    <h4 class="font-medium text-brand-dark dark:text-white">Nationwide Delivery</h4>
+                    <p class="text-xs text-gray-500 mt-1">Fast shipping across PK</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="about" class="bg-white pt-20 pb-10 border-t border-gray-200">
+    <footer class="bg-brand-darker pt-20 pb-10 text-brand-cream border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 <!-- Brand Info -->
-                <div class="reveal">
-                    <a href="#" class="font-display text-2xl font-bold tracking-wide text-charcoal flex items-center gap-2 mb-6">
-                        <div class="bg-gold text-white w-8 h-8 rounded-md flex items-center justify-center">
-                            <i class="fas fa-palette text-sm"></i>
-                        </div>
-                        The Golden Palette
+                <div class="lg:col-span-1">
+                    <a href="#" class="font-serif text-3xl tracking-wide font-semibold text-white flex items-center gap-2 mb-6">
+                        <span class="text-brand-lavender"><i class="ph-fill ph-sparkle"></i></span>
+                        Aura
                     </a>
-                    <p class="text-gray-500 text-sm leading-relaxed mb-6 font-medium">
-                        Sourcing the highest-grade art supplies, technical drafting tools, and studio equipment for professional creators and institutions globally.
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Glow from within. Premium essential oils, curated modest garments, and luxurious beauty products designed to elevate your everyday lifestyle.
                     </p>
-                    <div class="flex space-x-3">
-                        <a href="#" class="w-10 h-10 rounded-md bg-cream flex items-center justify-center text-charcoal hover:bg-gold hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-md bg-cream flex items-center justify-center text-charcoal hover:bg-gold hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-md bg-cream flex items-center justify-center text-charcoal hover:bg-gold hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-lavender hover:text-white transition duration-300">
+                            <i class="ph-fill ph-instagram-logo text-xl"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-lavender hover:text-white transition duration-300">
+                            <i class="ph-fill ph-facebook-logo text-xl"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-lavender hover:text-white transition duration-300">
+                            <i class="ph-fill ph-tiktok-logo text-xl"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Links -->
-                <div class="reveal" style="transition-delay: 100ms;">
-                    <h4 class="font-display font-bold text-lg mb-6 text-charcoal">Categories</h4>
-                    <ul class="space-y-3 font-medium">
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Professional Paints</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Precision Brushes</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Studio Canvases</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Drafting & Sketching</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Easels & Furniture</a></li>
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-serif text-lg mb-6">Shop</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-lavender transition">All Products</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">Hair & Essential Oils</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">Modest Garments</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">Skincare</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">Best Sellers</a></li>
                     </ul>
                 </div>
 
-                <!-- Assistance -->
-                <div class="reveal" style="transition-delay: 200ms;">
-                    <h4 class="font-display font-bold text-lg mb-6 text-charcoal">Support</h4>
-                    <ul class="space-y-3 font-medium">
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Shipping & Freight</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Track Order</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Return Policy</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">B2B Wholesale</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-gold text-sm transition-colors">Contact Support</a></li>
+                <!-- Support -->
+                <div>
+                    <h4 class="text-white font-serif text-lg mb-6">Support</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-lavender transition">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">Returns & Exchanges</a></li>
+                        <li><a href="#" class="hover:text-brand-lavender transition">FAQs</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact -->
-                <div class="reveal" style="transition-delay: 300ms;">
-                    <h4 class="font-display font-bold text-lg mb-6 text-charcoal">Contact Us</h4>
-                    <ul class="space-y-4">
+                <div>
+                    <h4 class="text-white font-serif text-lg mb-6">Contact Us</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
                         <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt text-gold mt-1"></i>
-                            <span class="text-gray-500 text-sm font-medium">Tech & Creative Hub, Building 4, NY 10012</span>
+                            <i class="ph ph-map-pin text-brand-lavender text-xl mt-0.5"></i>
+                            <span>F10 Markaz,<br>Islamabad, Pakistan</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fas fa-envelope text-gold"></i>
-                            <a href="mailto:sales@goldenpalette.com" class="text-gray-500 hover:text-gold text-sm font-medium transition-colors">sales@goldenpalette.com</a>
+                            <i class="ph ph-envelope-simple text-brand-lavender text-xl"></i>
+                            <a href="mailto:sana.aliii.malik@gmail.com" class="hover:text-white transition">sana.aliii.malik@gmail.com</a>
                         </li>
-                        <!-- Highlighted WhatsApp Contact -->
-                        <li class="mt-4">
-                            <div class="bg-cream p-4 rounded-xl border border-gray-200 flex items-center gap-4 group hover:border-gold hover:bg-white transition-all shadow-sm">
-                                <div class="w-12 h-12 bg-[#25D366] rounded-lg flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
-                                    <i class="fab fa-whatsapp text-2xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Direct Sales Support</p>
-                                    <a href="https://wa.me/923167476371" target="_blank" class="text-lg font-display font-bold text-charcoal group-hover:text-gold transition-colors">
-                                        0316 7476371
-                                    </a>
-                                </div>
-                            </div>
+                        <li class="flex items-center gap-3">
+                            <i class="ph ph-whatsapp-logo text-brand-emerald text-xl"></i>
+                            <a href="https://wa.me/923469142507" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">0346 9142507</a>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Copyright -->
-            <div class="pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-500 font-medium text-sm">
-                    &copy; <span id="year"></span> The Golden Palette. All rights reserved.
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">
+                    &copy; <span id="year"></span> Aura by Sakhi. All rights reserved.
                 </p>
-                <div class="flex gap-4 text-2xl text-gray-400">
-                    <i class="fab fa-cc-visa hover:text-charcoal transition-colors cursor-pointer"></i>
-                    <i class="fab fa-cc-mastercard hover:text-charcoal transition-colors cursor-pointer"></i>
-                    <i class="fab fa-cc-amex hover:text-charcoal transition-colors cursor-pointer"></i>
-                    <i class="fab fa-cc-paypal hover:text-charcoal transition-colors cursor-pointer"></i>
+                <div class="flex gap-2">
+                    <!-- Fake payment icons -->
+                    <div class="h-8 w-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">VISA</div>
+                    <div class="h-8 w-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">MC</div>
+                    <div class="h-8 w-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-400">COD</div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript Features -->
+    <!-- Cart Sidebar Overlay -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden transition-opacity opacity-0"></div>
+
+    <!-- Cart Sidebar Panel -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white dark:bg-brand-darker z-50 transform translate-x-full transition-transform duration-400 ease-in-out shadow-2xl flex flex-col">
+        <!-- Header -->
+        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-brand-light dark:bg-gray-900">
+            <h2 class="font-serif text-2xl text-brand-dark dark:text-white flex items-center gap-2">
+                <i class="ph ph-shopping-bag"></i> Your Cart
+            </h2>
+            <button id="close-cart" class="text-gray-400 hover:text-brand-dark dark:hover:text-white transition p-1">
+                <i class="ph ph-x text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Cart Items Container -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <!-- Items injected by JS -->
+            <div id="empty-cart-msg" class="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
+                <i class="ph ph-shopping-bag-open text-6xl opacity-50"></i>
+                <p>Your cart is empty.</p>
+                <button id="start-shopping-btn" class="px-6 py-2 border border-brand-lavender text-brand-lavender rounded-full hover:bg-brand-lavender hover:text-white transition">
+                    Start Shopping
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer / Checkout -->
+        <div id="cart-footer" class="border-t border-gray-100 dark:border-gray-800 p-6 bg-brand-light dark:bg-gray-900 hidden">
+            <div class="flex justify-between items-center mb-4 text-brand-dark dark:text-white">
+                <span class="text-gray-500 dark:text-gray-400">Subtotal</span>
+                <span id="cart-total" class="font-serif text-xl font-medium">PKR 0</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-6">Shipping and taxes calculated at checkout.</p>
+            <button class="w-full py-4 bg-brand-dark dark:bg-brand-lavender text-white rounded-full font-medium hover:bg-brand-lavender dark:hover:bg-purple-500 transition flex justify-center items-center gap-2 shadow-lg">
+                Checkout securely <i class="ph ph-lock-key"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick View Modal Overlay -->
+    <div id="quick-view-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0 transition-opacity">
+        <!-- Modal Content -->
+        <div id="quick-view-modal" class="bg-white dark:bg-brand-darker rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300">
+            <button id="close-quick-view" class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/50 dark:bg-black/50 backdrop-blur rounded-full flex items-center justify-center text-gray-800 dark:text-white hover:bg-white dark:hover:bg-gray-800 transition">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+            
+            <div class="w-full md:w-1/2 h-64 md:h-auto bg-gray-100 dark:bg-gray-900">
+                <img id="qv-image" src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+                <span id="qv-category" class="text-brand-lavender text-sm font-medium uppercase tracking-wider mb-2"></span>
+                <h2 id="qv-title" class="text-3xl font-serif text-brand-dark dark:text-white mb-2"></h2>
+                
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="flex text-brand-gold text-sm" id="qv-stars">
+                        <!-- Stars injected here -->
+                    </div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">(<span id="qv-reviews"></span> reviews)</span>
+                </div>
+
+                <div id="qv-price" class="text-2xl font-medium text-brand-dark dark:text-gray-200 mb-6"></div>
+                
+                <p id="qv-desc" class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-8 border-b border-gray-100 dark:border-gray-800 pb-6"></p>
+                
+                <div class="flex items-center gap-4 mb-6">
+                    <!-- Quantity -->
+                    <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-full overflow-hidden">
+                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition" onclick="document.getElementById('qv-qty').value = Math.max(1, parseInt(document.getElementById('qv-qty').value) - 1)">-</button>
+                        <input type="number" id="qv-qty" value="1" min="1" class="w-12 text-center bg-transparent border-none focus:ring-0 text-brand-dark dark:text-white font-medium p-0" readonly>
+                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition" onclick="document.getElementById('qv-qty').value = parseInt(document.getElementById('qv-qty').value) + 1">+</button>
+                    </div>
+                    <!-- Add to Cart -->
+                    <button id="qv-add-btn" class="flex-1 bg-brand-lavender hover:bg-purple-500 text-white py-3 rounded-full font-medium transition shadow-md shadow-brand-lavender/20">
+                        Add to Cart
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-4">
+                    <i class="ph ph-shield-check text-brand-emerald text-lg"></i>
+                    100% Authentic Product guarantee
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core JavaScript -->
     <script>
         // Set Current Year
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('shadow-md', 'py-3');
-                navbar.classList.remove('py-4');
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: "Rose & Argan Hair Oil",
+                price: 2500,
+                category: "Hair Care",
+                image: "https://images.unsplash.com/photo-1608248593842-8021f62c0ce6?q=80&w=600&auto=format&fit=crop",
+                rating: 4.8,
+                reviews: 124,
+                badge: "Best Seller",
+                desc: "A luxurious blend of pure Moroccan Argan oil and Moroccan rose extract. Deeply nourishes the scalp, promotes hair growth, and leaves hair silky smooth with a lingering floral scent."
+            },
+            {
+                id: 2,
+                name: "Premium Lavender Essential Oil",
+                price: 1800,
+                category: "Pure Oils",
+                image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=600&auto=format&fit=crop",
+                rating: 4.9,
+                reviews: 89,
+                badge: null,
+                desc: "100% pure, therapeutic-grade lavender essential oil. Perfect for aromatherapy, reducing stress, promoting deep sleep, and soothing skin irritations."
+            },
+            {
+                id: 3,
+                name: "Silk Chiffon Flow Abaya",
+                price: 8500,
+                category: "Garments",
+                image: "https://images.unsplash.com/photo-1589465885857-44edb59bbff2?q=80&w=600&auto=format&fit=crop",
+                rating: 5.0,
+                reviews: 42,
+                badge: "New Arrival",
+                desc: "Elevate your modest wardrobe with this ultra-soft, premium silk chiffon abaya. Features delicate pleating and a matching georgette hijab. Perfect for formal evenings."
+            },
+            {
+                id: 4,
+                name: "24k Gold Radiance Serum",
+                price: 3200,
+                category: "Skincare",
+                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=600&auto=format&fit=crop",
+                rating: 4.7,
+                reviews: 215,
+                badge: null,
+                desc: "Infused with real 24k gold flakes, hyaluronic acid, and vitamin C. This lightweight serum absorbs instantly to give you that coveted 'Aura by Sakhi' bridal glow."
+            }
+        ];
+
+        // Format Currency
+        const formatPrice = (price) => `PKR ${price.toLocaleString()}`;
+
+        // State
+        let cart = [];
+        let currentQuickViewProduct = null;
+
+        // DOM Elements
+        const productGrid = document.getElementById('product-grid');
+        const cartBtn = document.getElementById('cart-btn');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const cartCount = document.getElementById('cart-count');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const emptyCartMsg = document.getElementById('empty-cart-msg');
+        const cartFooter = document.getElementById('cart-footer');
+        const cartTotal = document.getElementById('cart-total');
+        const startShoppingBtn = document.getElementById('start-shopping-btn');
+        const toastContainer = document.getElementById('toast-container');
+        
+        // Quick View Elements
+        const qvOverlay = document.getElementById('quick-view-overlay');
+        const qvModal = document.getElementById('quick-view-modal');
+        const qvClose = document.getElementById('close-quick-view');
+        const qvAddBtn = document.getElementById('qv-add-btn');
+
+        // Theme Elements
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlElement = document.documentElement;
+
+        // Render Products
+        function renderProducts() {
+            productGrid.innerHTML = products.map(product => `
+                <div class="group reveal">
+                    <div class="relative bg-white dark:bg-brand-darker rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        ${product.badge ? `<div class="absolute top-3 left-3 bg-brand-emerald text-white text-xs font-bold px-3 py-1 rounded-full z-10">${product.badge}</div>` : ''}
+                        
+                        <!-- Hover Actions -->
+                        <div class="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-4 group-hover:translate-x-0 duration-300">
+                            <button onclick="addToCart(${product.id})" class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center text-brand-dark dark:text-white hover:bg-brand-lavender hover:text-white transition" title="Add to Cart">
+                                <i class="ph ph-shopping-cart text-lg"></i>
+                            </button>
+                            <button class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center text-brand-dark dark:text-white hover:text-brand-lavender transition" title="Wishlist">
+                                <i class="ph ph-heart text-lg"></i>
+                            </button>
+                            <button onclick="openQuickView(${product.id})" class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center text-brand-dark dark:text-white hover:text-brand-lavender transition" title="Quick View">
+                                <i class="ph ph-eye text-lg"></i>
+                            </button>
+                        </div>
+
+                        <div class="relative h-72 img-zoom-container bg-gray-100 dark:bg-gray-900 cursor-pointer" onclick="openQuickView(${product.id})">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover img-zoom">
+                        </div>
+                        
+                        <div class="p-5 cursor-pointer" onclick="openQuickView(${product.id})">
+                            <span class="text-xs text-brand-lavender font-semibold uppercase tracking-wider">${product.category}</span>
+                            <h3 class="font-serif text-lg text-brand-dark dark:text-white mt-1 mb-2 group-hover:text-brand-lavender transition">${product.name}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium text-brand-dark dark:text-gray-200">${formatPrice(product.price)}</span>
+                                <div class="flex items-center text-brand-gold text-sm gap-1">
+                                    <i class="ph-fill ph-star"></i>
+                                    <span class="text-gray-600 dark:text-gray-400 text-xs">${product.rating}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Re-trigger observer for new elements
+            observeElements();
+        }
+
+        // Cart Logic
+        function addToCart(productId, quantity = 1) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += quantity;
             } else {
-                navbar.classList.remove('shadow-md', 'py-3');
-                navbar.classList.add('py-4');
+                cart.push({ ...product, quantity });
+            }
+
+            updateCartUI();
+            showToast(`${product.name} added to cart!`);
+            
+            // Small animation on cart icon
+            cartBtn.classList.add('scale-125', 'text-brand-lavender');
+            setTimeout(() => cartBtn.classList.remove('scale-125', 'text-brand-lavender'), 300);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartQuantity(productId, newQuantity) {
+            if (newQuantity < 1) return;
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            // Update Count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Toggle Empty State
+            if (cart.length === 0) {
+                emptyCartMsg.classList.remove('hidden');
+                cartFooter.classList.add('hidden');
+                // Remove all item elements
+                Array.from(cartItemsContainer.children).forEach(child => {
+                    if (child.id !== 'empty-cart-msg') child.remove();
+                });
+            } else {
+                emptyCartMsg.classList.add('hidden');
+                cartFooter.classList.remove('hidden');
+                
+                // Keep empty msg but remove item rows to rebuild
+                Array.from(cartItemsContainer.children).forEach(child => {
+                    if (child.id !== 'empty-cart-msg') child.remove();
+                });
+
+                // Build Items
+                cart.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'flex gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 animate-fade-in-up';
+                    el.innerHTML = `
+                        <div class="h-20 w-20 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                            <img src="${item.image}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-sm font-medium text-brand-dark dark:text-white line-clamp-1">${item.name}</h4>
+                                    <p class="text-xs text-brand-lavender">${formatPrice(item.price)}</p>
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 transition">
+                                    <i class="ph ph-trash"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-full h-7">
+                                    <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})" class="px-2 text-gray-500 hover:text-brand-dark dark:hover:text-white">-</button>
+                                    <span class="text-xs w-6 text-center text-brand-dark dark:text-white">${item.quantity}</span>
+                                    <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})" class="px-2 text-gray-500 hover:text-brand-dark dark:hover:text-white">+</button>
+                                </div>
+                                <p class="text-sm font-medium text-brand-dark dark:text-white">${formatPrice(item.price * item.quantity)}</p>
+                            </div>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(el);
+                });
+
+                // Update Total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartTotal.textContent = formatPrice(total);
+            }
+        }
+
+        // Sidebar Toggles
+        function openCart() {
+            cartOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                cartOverlay.classList.remove('opacity-0');
+                cartSidebar.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // prevent bg scroll
+        }
+
+        function closeCart() {
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                cartOverlay.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        cartBtn.addEventListener('click', openCart);
+        closeCartBtn.addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', closeCart);
+        startShoppingBtn.addEventListener('click', () => {
+            closeCart();
+            window.location.hash = '#featured';
+        });
+
+        // Quick View Logic
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            currentQuickViewProduct = product;
+
+            // Populate data
+            document.getElementById('qv-image').src = product.image;
+            document.getElementById('qv-category').textContent = product.category;
+            document.getElementById('qv-title').textContent = product.name;
+            document.getElementById('qv-price').textContent = formatPrice(product.price);
+            document.getElementById('qv-desc').textContent = product.desc;
+            document.getElementById('qv-reviews').textContent = product.reviews;
+            document.getElementById('qv-qty').value = 1;
+
+            // Populate stars
+            const starsContainer = document.getElementById('qv-stars');
+            starsContainer.innerHTML = '';
+            for(let i=0; i<5; i++) {
+                if(i < Math.floor(product.rating)) {
+                    starsContainer.innerHTML += '<i class="ph-fill ph-star"></i>';
+                } else if(i < product.rating) {
+                    starsContainer.innerHTML += '<i class="ph-fill ph-star-half"></i>';
+                } else {
+                    starsContainer.innerHTML += '<i class="ph ph-star"></i>';
+                }
+            }
+
+            // Show Modal
+            qvOverlay.classList.remove('hidden');
+            qvOverlay.classList.add('flex');
+            setTimeout(() => {
+                qvOverlay.classList.remove('opacity-0');
+                qvModal.classList.remove('scale-95');
+                qvModal.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuickView() {
+            qvOverlay.classList.add('opacity-0');
+            qvModal.classList.remove('scale-100');
+            qvModal.classList.add('scale-95');
+            setTimeout(() => {
+                qvOverlay.classList.add('hidden');
+                qvOverlay.classList.remove('flex');
+            }, 300);
+            document.body.style.overflow = '';
+            currentQuickViewProduct = null;
+        }
+
+        qvClose.addEventListener('click', closeQuickView);
+        qvOverlay.addEventListener('click', (e) => {
+            if(e.target === qvOverlay) closeQuickView();
+        });
+        qvAddBtn.addEventListener('click', () => {
+            if(currentQuickViewProduct) {
+                const qty = parseInt(document.getElementById('qv-qty').value) || 1;
+                addToCart(currentQuickViewProduct.id, qty);
+                closeQuickView();
+                // Optionally open cart right after adding
+                // setTimeout(openCart, 400); 
             }
         });
+
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'bg-brand-dark dark:bg-brand-light text-white dark:text-brand-dark px-6 py-3 rounded-md shadow-xl flex items-center gap-3 animate-slide-in-right';
+            toast.innerHTML = `
+                <i class="ph-fill ph-check-circle text-brand-emerald text-xl"></i>
+                <span class="text-sm font-medium">${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
 
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -498,75 +843,78 @@
         
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuBtn.querySelector('i');
+            if(mobileMenu.classList.contains('hidden')) {
+                icon.classList.replace('ph-x', 'ph-list');
+            } else {
+                icon.classList.replace('ph-list', 'ph-x');
+            }
         });
 
-        // Close mobile menu when a link is clicked
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').classList.replace('ph-x', 'ph-list');
             });
         });
 
-        // Scroll Reveal Animation using Intersection Observer
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealCallback = (entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Stop observing once revealed
-                }
-            });
-        };
+        // Scroll Reveal Animation Observer
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once revealed
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-        const revealOptions = {
-            threshold: 0.15, // Trigger when 15% of element is visible
-            rootMargin: "0px 0px -50px 0px"
-        };
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
 
-        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
-        
-        revealElements.forEach(el => {
-            revealObserver.observe(el);
+        // Dark Mode / Theme Toggle
+        function initTheme() {
+            // Check local storage or system preference
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                htmlElement.classList.add('dark');
+                themeIcon.classList.replace('ph-moon', 'ph-sun');
+            } else {
+                htmlElement.classList.remove('dark');
+                themeIcon.classList.replace('ph-sun', 'ph-moon');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                themeIcon.classList.replace('ph-sun', 'ph-moon');
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                themeIcon.classList.replace('ph-moon', 'ph-sun');
+            }
         });
 
-        // Shopping Cart Logic & Toast Notification
-        let cartCount = 0;
-        const cartBadge = document.getElementById('cart-count');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toast-message');
-        let toastTimeout;
+        // Navbar blur effect on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-sm');
+            }
+        });
 
-        function addToCart(productName) {
-            // Update Counter
-            cartCount++;
-            cartBadge.textContent = cartCount;
-            
-            // Pop effect on badge
-            cartBadge.classList.add('scale-150');
-            setTimeout(() => {
-                cartBadge.classList.remove('scale-150');
-            }, 200);
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            initTheme();
+            observeElements();
+        });
 
-            // Show Toast Notification
-            showToast(`Added ${productName} to cart!`);
-        }
-
-        function showToast(message) {
-            toastMessage.textContent = message;
-            
-            toast.classList.add('show');
-            toast.style.transform = 'translateY(0)';
-            
-            // Clear existing timeout if multiple clicks happen quickly
-            clearTimeout(toastTimeout);
-            
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-                toast.style.transform = 'translateY(10px)';
-            }, 3000);
-        }
     </script>
 </body>
 </html>
